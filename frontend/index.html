@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maintenance Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1 id="equipmentName">Maintenance Tracker</h1>
+    <p class="subtitle">Tap a task to mark it complete</p>
+  </header>
+
+  <main>
+    <!-- Task list -->
+    <section id="taskList" class="card">
+      <h2>Tasks</h2>
+      <div id="taskItems" class="task-items">
+        <p class="loading">Loading tasks&hellip;</p>
+      </div>
+    </section>
+
+    <!-- Completion form (shown when tasks are selected) -->
+    <section id="completeForm" class="card hidden">
+      <h2>Complete Selected Tasks</h2>
+
+      <div class="selected-summary" id="selectedSummary"></div>
+
+      <label for="userSelect">Your Name</label>
+      <select id="userSelect" required>
+        <option value="">— Select —</option>
+      </select>
+
+      <label for="notesInput">Notes (optional)</label>
+      <textarea id="notesInput" rows="2" placeholder="Any extra details&hellip;"></textarea>
+
+      <button id="submitBtn" class="btn-primary" disabled>Submit</button>
+    </section>
+
+    <!-- Status banner -->
+    <div id="statusBanner" class="status-banner hidden"></div>
+  </main>
+
+  <footer>
+    <button id="refreshBtn" class="btn-secondary">Refresh</button>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+venv/
+credentials.json
+config.ini
+__pycache__/
+*.pyc
+.env
+qr_code.png

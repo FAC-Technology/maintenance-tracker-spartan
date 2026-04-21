@@ -1,0 +1,16 @@
+[Unit]
+Description=Mantech Spartan Router Maintenance Tracker
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=admin
+WorkingDirectory=/home/admin/maintenance-tracker-spartan
+ExecStart=/home/admin/maintenance-tracker-spartan/venv/bin/python /home/admin/maintenance-tracker-spartan/app.py
+Restart=always
+RestartSec=5
+Environment=FLASK_ENV=production
+
+[Install]
+WantedBy=multi-user.target

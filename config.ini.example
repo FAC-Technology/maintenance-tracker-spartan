@@ -1,0 +1,14 @@
+[EQUIPMENT]
+NAME = Equipment Name
+
+[USERS]
+# Comma-separated list of names for the dropdown
+NAMES = Alice,Bob,Charlie
+
+[SHEETS]
+# Column range where task data lives on the Tasks worksheet
+TASKS_COLUMNS = E:L
+
+[GOOGLE]
+SHEETS_ID = <spreadsheet-id-from-url>
+CREDENTIALS_FILE = credentials.json
