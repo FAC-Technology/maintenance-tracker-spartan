@@ -54,7 +54,7 @@ CREDENTIALS_FILE = credentials.json
 ### 5. Install as a Service
 
 ```bash
-sudo cp maintenance-tracker.service /etc/systemd/system/
+sudo cp maintenance-tracker.service /etc/systemd/system/sud
 sudo systemctl daemon-reload
 sudo systemctl enable maintenance-tracker
 sudo systemctl start maintenance-tracker

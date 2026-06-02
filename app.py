@@ -29,10 +29,21 @@ USER_NAMES = [n.strip() for n in config.get("USERS", "NAMES", fallback="").split
 SHEETS_ID = config.get("GOOGLE", "SHEETS_ID", fallback="")
 CREDENTIALS_FILE = BASE_DIR / config.get("GOOGLE", "CREDENTIALS_FILE", fallback="credentials.json")
 
-# Column range where task data lives (e.g. "E:L" if columns A-D have other data)
-TASKS_COLUMNS = config.get("SHEETS", "TASKS_COLUMNS", fallback="A:H")
-_TASKS_START_COL = TASKS_COLUMNS.split(":")[0].upper()
-_TASKS_COL_OFFSET = sum((ord(c) - 64) * (26 ** i) for i, c in enumerate(reversed(_TASKS_START_COL))) - 1
+import re
+
+# Range where task data lives, e.g. "E2:L" means headers in row 2, cols E-L
+TASKS_RANGE = config.get("SHEETS", "TASKS_RANGE", fallback="A1:H")
+
+def _parse_range(r: str):
+    """Extract start column letter, start row number, and end column from a range like 'E2:L'."""
+    m = re.match(r"([A-Z]+)(\d+):([A-Z]+)(\d*)", r.upper())
+    if not m:
+        raise ValueError(f"Invalid TASKS_RANGE: {r}")
+    start_col, start_row, end_col = m.group(1), int(m.group(2)), m.group(3)
+    col_num = sum((ord(c) - 64) * (26 ** i) for i, c in enumerate(reversed(start_col))) - 1
+    return start_col, start_row, end_col, col_num
+
+_TASKS_START_COL, _TASKS_START_ROW, _TASKS_END_COL, _TASKS_COL_OFFSET = _parse_range(TASKS_RANGE)
 
 DATE_FMT = "%Y-%m-%d"
 
@@ -109,8 +120,8 @@ def _compute_status(row: dict) -> dict:
 
 
 def _get_task_records(ws) -> tuple[list[str], list[list[str]]]:
-    """Read only the configured column range and return (headers, data_rows)."""
-    all_values = ws.get(TASKS_COLUMNS)
+    """Read only the configured range and return (headers, data_rows)."""
+    all_values = ws.get(TASKS_RANGE)
     if not all_values:
         return [], []
     headers = all_values[0]
@@ -159,7 +170,7 @@ def complete_tasks(completed_by: str, task_names: list[str], notes: str = ""):
                 pass
 
             next_due = (date.today() + timedelta(days=freq)).strftime(DATE_FMT)
-            sheet_row = data_row_idx + 2  # +1 for header, +1 for 1-indexed
+            sheet_row = _TASKS_START_ROW + 1 + data_row_idx  # header row + data offset
 
             for col_name, value in [("Last Completed", today_str),
                                      ("Completed By", completed_by),

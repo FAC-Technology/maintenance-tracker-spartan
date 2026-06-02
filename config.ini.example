@@ -6,8 +6,8 @@ NAME = Equipment Name
 NAMES = Alice,Bob,Charlie
 
 [SHEETS]
-# Column range where task data lives on the Tasks worksheet
-TASKS_COLUMNS = E:L
+# Range where task data lives (first row of range = headers)
+TASKS_RANGE = E2:L
 
 [GOOGLE]
 SHEETS_ID = <spreadsheet-id-from-url>
